@@ -13,10 +13,10 @@ def style_transfer(content_path,
                    total_variation_weight=0.01,
                    epochs=20,
                    steps_per_epoch=100,
-                   max_dim=512):
-
-    content_image = _load_img(content_path)
-    style_image = _load_img(style_path)
+                   max_dim=512,
+                   save_path='/style_trans.png'):
+    content_image = _load_img(content_path,max_dim)
+    style_image = _load_img(style_path, max_dim)
 
     content_layers = ['block5_conv2']
     style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
@@ -65,6 +65,8 @@ def style_transfer(content_path,
         display.clear_output(wait=True)
         display.display(_tensor_to_image(image))
         print("Train step: {}".format(step))
+
+    save_image(_tensor_to_image(image), save_path)
 
 
 class StyleContentModel(tf.keras.models.Model):
@@ -130,8 +132,7 @@ def _tensor_to_image(tensor):
     return PIL.Image.fromarray(tensor)
 
 
-def _load_img(path_to_img):
-    max_dim = max_dim
+def _load_img(path_to_img, max_dim):
     img = tf.io.read_file(path_to_img)
     img = tf.image.decode_image(img, channels=3)
     img = tf.image.convert_image_dtype(img, tf.float32)
@@ -145,6 +146,20 @@ def _load_img(path_to_img):
     img = tf.image.resize(img, new_shape)
     img = img[tf.newaxis, :]
     return img
+
+
+def save_image(image, filename):
+    """
+    Saves unscaled Tensor Images.
+    Args:
+      image: 3D image tensor. [height, width, channels]
+      filename: Name of the file to save to.
+  """
+    if not isinstance(image, PIL.Image.Image):
+        image = tf.clip_by_value(image, 0, 255)
+        image = PIL.Image.fromarray(tf.cast(image, tf.uint8).numpy())
+    image.save("%s.jpg" % filename)
+    print("Saved as %s.jpg" % filename)
 
 
 def imshow(image, title=None):
