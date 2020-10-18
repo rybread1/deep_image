@@ -15,8 +15,8 @@ def style_transfer(content_path,
                    steps_per_epoch=100,
                    max_dim=512):
 
-    content_image = _load_img(content_path)
-    style_image = _load_img(style_path)
+    content_image = _load_img(content_path, max_dim)
+    style_image = _load_img(style_path, max_dim)
 
     content_layers = ['block5_conv2']
     style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
@@ -130,8 +130,7 @@ def _tensor_to_image(tensor):
     return PIL.Image.fromarray(tensor)
 
 
-def _load_img(path_to_img):
-    max_dim = max_dim
+def _load_img(path_to_img, max_dim):
     img = tf.io.read_file(path_to_img)
     img = tf.image.decode_image(img, channels=3)
     img = tf.image.convert_image_dtype(img, tf.float32)
