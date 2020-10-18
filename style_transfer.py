@@ -12,7 +12,8 @@ def style_transfer(content_path,
                    learning_rate=0.01,
                    total_variation_weight=0.01,
                    epochs=20,
-                   steps_per_epoch=100):
+                   steps_per_epoch=100,
+                   max_dim=512):
 
     content_image = _load_img(content_path)
     style_image = _load_img(style_path)
@@ -130,7 +131,7 @@ def _tensor_to_image(tensor):
 
 
 def _load_img(path_to_img):
-    max_dim = 1024
+    max_dim = max_dim
     img = tf.io.read_file(path_to_img)
     img = tf.image.decode_image(img, channels=3)
     img = tf.image.convert_image_dtype(img, tf.float32)
