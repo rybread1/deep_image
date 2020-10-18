@@ -14,7 +14,9 @@ def style_transfer(content_path,
                    epochs=20,
                    steps_per_epoch=100,
                    max_dim=512,
-                   save_path='/style_trans.png'):
+                   save_path='/style_trans.png'
+                   ):
+
     content_image = _load_img(content_path,max_dim)
     style_image = _load_img(style_path, max_dim)
 
