@@ -20,7 +20,7 @@ def style_transfer(content_path,
     content_image = _load_img(content_path,max_dim)
     style_image = _load_img(style_path, max_dim)
 
-    content_layers = ['block5_conv2']
+    content_layers = ['block3_conv2']
     style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
 
     num_content_layers = len(content_layers)
@@ -35,11 +35,15 @@ def style_transfer(content_path,
     def style_content_loss(outputs):
         style_outputs = outputs['style']
         content_outputs = outputs['content']
-        style_loss = tf.add_n([tf.reduce_mean((style_outputs[name] - style_targets[name]) ** 2)
+#         style_loss = tf.add_n([tf.reduce_mean((style_outputs[name] - style_targets[name]) ** 2)
+#                                for name in style_outputs.keys()])
+        style_loss = tf.add_n([tf.reduce_mean(tf.math.abs((style_outputs[name] - style_targets[name])))
                                for name in style_outputs.keys()])
         style_loss *= style_weight / num_style_layers
 
-        content_loss = tf.add_n([tf.reduce_mean((content_outputs[name] - content_targets[name]) ** 2)
+#         content_loss = tf.add_n([tf.reduce_mean((content_outputs[name] - content_targets[name]) ** 2)
+#                                  for name in content_outputs.keys()])
+        content_loss = tf.add_n([tf.reduce_mean(tf.math.abs((content_outputs[name] - content_targets[name])))
                                  for name in content_outputs.keys()])
         content_loss *= content_weight / num_content_layers
         loss = style_loss + content_loss
