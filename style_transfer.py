@@ -14,12 +14,13 @@ def style_transfer(content_path,
                    epochs=20,
                    steps_per_epoch=100,
                    max_dim=512,
-                   grey=False,
+                   content_grey=False,
+                   style_grey=False,
                    save_path='/style_trans.png'
                    ):
 
     content_image = _load_img(content_path,max_dim, grey=grey)
-    style_image = _load_img(style_path, max_dim)
+    style_image = _load_img(style_path, max_dim, grey=grey)
 
     content_layers = ['block3_conv2']
     style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1']
