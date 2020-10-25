@@ -14,10 +14,11 @@ def style_transfer(content_path,
                    epochs=20,
                    steps_per_epoch=100,
                    max_dim=512,
+                   grey=False,
                    save_path='/style_trans.png'
                    ):
 
-    content_image = _load_img(content_path,max_dim)
+    content_image = _load_img(content_path,max_dim, grey=grey)
     style_image = _load_img(style_path, max_dim)
 
     content_layers = ['block3_conv2']
@@ -138,11 +139,15 @@ def _tensor_to_image(tensor):
     return PIL.Image.fromarray(tensor)
 
 
-def _load_img(path_to_img, max_dim):
+def _load_img(path_to_img, max_dim, grey=False):
     img = tf.io.read_file(path_to_img)
     img = tf.image.decode_image(img, channels=3)
     img = tf.image.convert_image_dtype(img, tf.float32)
-
+    
+    if grey:
+        img = tf.image.rgb_to_grayscale(img)
+        img = tf.squeeze(tf.stack([img, img, img], axis=2))
+        
     shape = tf.cast(tf.shape(img)[:-1], tf.float32)
     long_dim = max(shape)
     scale = max_dim / long_dim
