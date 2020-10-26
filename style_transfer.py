@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import PIL
 import IPython.display as display
 import numpy as np
+import os
 
 
 def style_transfer(content_path,
@@ -16,7 +17,7 @@ def style_transfer(content_path,
                    max_dim=512,
                    content_grey=False,
                    style_grey=False,
-                   save_path='/style_trans.png'
+                   save_folder=None
                    ):
 
     content_image = _load_img(content_path,max_dim, grey=content_grey)
@@ -70,11 +71,14 @@ def style_transfer(content_path,
             step += 1
             train_step(image)
             print(".", end='')
+
+        if save_folder:
+            save_image(_tensor_to_image(image), os.path.join(save_folder, f'epoch-{n}'))
         display.clear_output(wait=True)
         display.display(_tensor_to_image(image))
         print("Train step: {}".format(step))
 
-    save_image(_tensor_to_image(image), save_path)
+    
 
 
 class StyleContentModel(tf.keras.models.Model):
