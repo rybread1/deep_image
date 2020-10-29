@@ -1,9 +1,5 @@
-# deep-image
+## Neural style transfer for image augmentation!
 
-**Deep NN tools for image augmentation:**
-- style transfer
-- super resolution
-- TODO: human extractor and selective style transfer
 
 
 <p float="left"> 
