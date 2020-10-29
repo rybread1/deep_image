@@ -3,7 +3,7 @@
 
 
 <p float="left"> 
-  <img src="/assets/nature.jpg" width="425" /> 
-  <img src="/assets/forest_layla.png" width="425" />
+  <img src="/assets/nature.jpg" width="400" /> 
+  <img src="/assets/forest_layla.png" width="400" />
 </p>
 
