@@ -6,7 +6,7 @@
 </p>
 
 <p float="left"> 
-  <img src="/assets/kona2.jpg" width="400" /> 
+  <img src="/assets/kona.jpg" width="400" /> 
   <img src="/assets/kona_styled.png" width="400" />
 </p>
 
