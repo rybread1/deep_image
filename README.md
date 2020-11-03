@@ -2,7 +2,7 @@
 
 <p float="left"> 
   <img src="/assets/sean_start.png" width="400" /> 
-  <img src="/assets/sean_mayan.png" width="400" />
+  <img src="/assets/sean_mayan.jpg" width="400" />
 </p>
 
 <p float="left"> 
