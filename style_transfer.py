@@ -62,9 +62,11 @@ def style_transfer(content_path,
 
     opt = tf.optimizers.Adam(learning_rate=learning_rate, beta_1=0.99, epsilon=1e-1)
 
-    def style_content_loss(outputs):
+    def style_content_loss(outputs, image):
         style_outputs = outputs['style']
         content_outputs = outputs['content']
+
+        # histogram_loss = (hist_loss(content_outputs['block4_conv1'], style_targets['block4_conv1'])) * 0.00001
 
         style_weights = dict(zip(style_layers, list(style_layer_weights)))
         style_loss = tf.add_n([tf.reduce_mean(tf.math.abs((style_outputs[name] - style_targets[name]))) * style_weights[name]
@@ -74,6 +76,7 @@ def style_transfer(content_path,
         content_loss = tf.add_n([tf.reduce_mean(tf.math.abs((content_outputs[name] - content_targets[name])))
                                  for name in content_outputs.keys()])
         content_loss *= content_weight / num_content_layers
+
         loss = style_loss + content_loss
         return loss, content_loss, style_loss
 
@@ -81,12 +84,13 @@ def style_transfer(content_path,
     def train_step(image):
         with tf.GradientTape() as tape:
             outputs = extractor(image)
-            loss = style_content_loss(outputs)
+            loss, content_loss, style_loss = style_content_loss(outputs, image)
             loss += total_variation_weight * tf.image.total_variation(image)
 
         grad = tape.gradient(loss, image)
         opt.apply_gradients([(grad, image)])
         image.assign(clip_0_1(image))
+        return loss, content_loss, style_loss
 
     image = tf.Variable(content_image)
 
