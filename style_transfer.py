@@ -9,7 +9,7 @@ import json
 
 def style_transfer(content_path,
                    style_path,
-                   content_layers='block4_conv1',
+                   content_layers=('block4_conv1',),
                    style_layers=('block1_conv1', 'block2_conv1', 'block3_conv1', 'block4_conv1', 'block5_conv1'),
                    style_layer_weights=(0.1, 0.2, 0.5, 0.8, 1),
                    gram_offset=1,
