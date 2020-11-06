@@ -177,7 +177,7 @@ def clip_0_1(image):
 
 
 def _gram_matrix(input_tensor, offset):
-    result = tf.linalg.einsum('bijc,bijd->bcd', input_tensor - gram_offset, input_tensor - gram_offset)
+    result = tf.linalg.einsum('bijc,bijd->bcd', input_tensor - offset, input_tensor - offset)
     input_shape = tf.shape(input_tensor)
     num_locations = tf.cast(input_shape[1] * input_shape[2], tf.float32)
     return result / num_locations
